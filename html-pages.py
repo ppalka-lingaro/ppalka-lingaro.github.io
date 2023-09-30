@@ -57,7 +57,7 @@ def main():
             svgs = [file for file in files if file.endswith(".svg")]
             print("svgs: ", svgs)
             if svgs:
-                rel_dir = os.path.relpath(subdir,directory)
+                rel_dir = os.path.relpath(subdir,path)
                 print("rd: ", rel_dir)
                 main_folder = rel_dir.split(os.path.sep)[0]
                 print("mf: ", main_folder)
