@@ -1,0 +1,7 @@
+    <hr>
+    <h1 style="font-size:16px;">{{ path }}</h1>
+        <div class="grid">
+            {% for icon in icons_list %}
+            <div id="{{ icon }}" class="imgbox"><img src="{{ path }}/{{ icon }}" class="bg-0" onclick="download('{{ path }}/{{ icon }}', this)"/><div class="label">{{ icon }}</div></div>
+            {% endfor %}
+        </div>
