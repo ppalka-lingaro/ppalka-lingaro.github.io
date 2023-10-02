@@ -3,14 +3,70 @@
 <head>
 <meta charset='UTF-8'>
 <title>Index</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+    body {
+        font-family: 'Maven Pro', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        list-style-type: none;
+        padding: 0;
+        width: 50%;
+    }
+    li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        height: 200px;
+        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    }
+    li.header, li.footer {
+        grid-column: span 2;
+        border: none;
+        background-color: #f0f0f0;
+        color: #333;
+        font-size: 1.5em;
+        box-shadow: none;
+        height: auto;
+    }
+    a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        color: black;
+        text-decoration: none;
+    }
+    img {
+        max-width: 100%;
+        max-height: 50px;
+        margin-bottom: 10px;
+    }
+</style>
 </head>
 <body>
-<h1>Icons Index Page</h1>
-<ul>
-<li><a href='icons\Microsoft Fabric\Microsoft Fabric.html'>Microsoft Fabric</a></li>
-<li><a href='icons\Azure Public Service Icons\Azure Public Service Icons.html'>Azure Public Service Icons</a></li>
-<li><a href='icons\Google cloud icons\Google cloud icons.html'>icons\Google cloud icons\Google cloud icons</a></li>
-<li><a href='icons\AWS asset package\AWS asset package.html'>AWS asset package</a></li>
-
+    <ul>
+        <li class="header">Lingaro Icons</li>
+        <li><a href='icons/Microsoft Fabric/Microsoft Fabric.html'><img src='icons/Microsoft Fabric/Product/Fabric_256.svg' alt='Microsoft Fabric Icon'/>Microsoft Fabric</a></li>
+        <li><a href='icons/Azure Public Service Icons/Azure Public Service Icons.html'><img src='icons/Azure Public Service Icons/azure.svg' alt='Azure Public Service Icons Icon'/>Azure Public Service Icons</a></li>
+        <li><a href='icons/Google cloud icons/Google cloud icons.html'><img src='icons/Google cloud icons/google-cloud-services.png' alt='Google cloud icons Icon'/>Google cloud icons</a></li>
+        <li><a href='icons/AWS asset package/AWS asset package.html'><img src='icons/AWS asset package/aws-logo.png' alt='AWS asset package Icon'/>AWS asset package</a></li>
+        <li class="footer">Other Icons</li>
+        <li><a href='https://gcpicons.com'><img src='icons/gcp-icons-logo.svg' alt='GCP Icons'/>GCP Icons</a></li>
+        <li><a href='https://aws-icons.com/'><img src='icons/aws-icons-logo.svg' alt='AWS Icons'/>AWS Icons</a></li>
+    </ul>
 </body>
 </html>

@@ -2,47 +2,28 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
-# Specify the directory you want to search
-directory = Path('icons')
 
-#svg_dir = "icons"  # replace with the path to your directory containing SVGs and subdirectories.
-output_dir = "pages"  # Output directory for the generated web pages.
+from jinja2 import Environment, FileSystemLoader
 
-def generate_body_sec(path,svgs):
-    """ Generate a table for the icon
-        read the template from file
-        render the template
-        write the rendered template to file
-    """
-    for name in svgs:
-        # extract the name of the icon from the filename
+ICON_SITE = 'https://icons.terrastruct.com/'
 
-    # Create an Environment object with the current directory as the template path.
-        env = Environment(loader=FileSystemLoader('./templates/'))
-
-    # Load the template from file.
-        template = env.get_template('body_section.jinja')
-
-    # Render the template with the required variables.
-        linux_path = path.replace("\\","/")
-        rendered_table = template.render(path=linux_path, icons_list=svgs)
-    return(rendered_table)
-
-def generate_page(type, name, body):
+def generate_class(type, name, url):
     """ Generate a class for the icon
         read the template from file
         render the template
         write the rendered template to file
     """
     # Create an Environment object with the current directory as the template path.
-    env = Environment(loader=FileSystemLoader('./templates/'))
+    env = Environment(loader=FileSystemLoader('.'))
 
     # Load the template from file.
     template = env.get_template(f'{type}.jinja')
 
     # Render the template with the required variables.
-    rendered_class = template.render(name=name, body=body)
+    rendered_class = template.render(name=name, url=url)
     return(rendered_class)
+
+
 
 def main():
     grouped_pages = {}

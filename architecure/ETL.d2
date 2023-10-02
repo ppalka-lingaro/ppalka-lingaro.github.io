@@ -1,0 +1,43 @@
+classes: {...@../classes/other/terrastruct/azure.d2.classes}
+direction: right
+Ingestion.class: Data Pipeline
+
+cleansing.shape: circle
+refining.shape: circle
+
+raw.label: raw
+cleansed.label: cleansed
+refined.label: refined
+
+
+ETL: "Data Processing" {
+    Data Lake: {
+        raw.class: Data Lake Storage
+        cleansed.class: Data Lake Storage
+        refined.class: Data Lake Storage
+
+        raw -> cleansed : "cleasing"
+        cleansed -> refined: "refining"
+        }
+    processing: {
+        Tranformation: {
+                    class: Databricks
+                    label: "Data Transformation"
+                    }
+        Orchestration: {
+            class: Data Pipeline
+            label: "Data Orchestration"
+            }
+            Orchestration --> Tranformation: "orchestrate"
+    }
+    processing.style.fill: transparent
+    processing.style.stroke: transparent
+
+}
+
+Ingestion.label: Ingestion {
+    label.near: top-center
+}
+
+Ingestion -> raw: "ingest"
+

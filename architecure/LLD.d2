@@ -1,0 +1,9 @@
+classes: {...@../classes/other/terrastruct/azure.d2.classes}
+direction: right
+Data Sources: @Data_Sources.d2
+ETL: {
+    ...@ETL.d2
+}
+
+Data Sources -> ETL.Ingestion: "ingest data"
+
