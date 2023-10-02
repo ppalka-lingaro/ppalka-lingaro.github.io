@@ -1,0 +1,50 @@
+classes: {...@../classes/other/terrastruct/azure.d2.classes}
+direction: right
+
+ETL: {
+    Data_Lake: {
+        raw: { label: "Raw Data"
+                class: Data Lake Storage
+            }
+        cleansed: { label: "Cleansed Data"
+                    class: Data Lake Storage
+                    }
+        refined: { label: "Refined Data"
+                    class: Data Lake Storage
+                    }
+
+        raw -> cleansed : "cleasing"
+        cleansed -> refined: "refining"
+        }
+    Data Processing: {
+        Tranformation: {
+                    class: Databricks
+                    label: "Data Transformation"
+                    }
+        Orchestration: {
+            class: Data Pipeline
+            label: "Data Orchestration"
+            }
+            Orchestration --> Tranformation: "orchestrate"
+    }
+    Data Processing.style.fill: transparent
+    Data Processing.style.stroke: transparent
+}
+
+Data Ingestion: {
+    Ingestion: {
+        class: Data Pipeline
+        label: "Data Ingestion"
+        }
+}
+Data Ingestion -> Data_Lake: "ingest"
+
+Batch Data Sources: {
+    blob.class: Data Lake Storage
+    Legacy SQL Database.class: Azure SQL Database
+    API Connections.class: API Connections
+}
+
+Stream Data Sources: {
+    API Connections.class: API Connections
+}

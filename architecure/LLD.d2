@@ -1,9 +1,13 @@
 classes: {...@../classes/other/terrastruct/azure.d2.classes}
 direction: right
-Data Sources: @Data_Sources.d2
-ETL: {
-    ...@ETL.d2
-}
 
-Data Sources -> ETL.Ingestion: "ingest data"
+
+Data Sources: @Data_Sources.d2
+ETL: @Classic_Components.d2.ETL
+Ingestion: @Classic_Components.d2.Data Ingestion
+
+
+Data Sources.*.* -> Ingestion: "Extract data"
+Ingestion -> ETL.Data_lake.raw: "Ingest data"
+
 
