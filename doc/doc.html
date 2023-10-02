@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Markdown Display</title>
+    <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+</head>
+<body>
+    <div id="content"></div>
+
+    <script>
+        // Create an instance of showdown Converter
+        let converter = new showdown.Converter();
+
+        // Fetch the markdown file
+        fetch('https://ppalka-lingaro.github.io/README.md')
+            .then(response => response.text())
+            .then(text => {
+                // Convert the markdown to HTML
+                let html = converter.makeHtml(text);
+
+                // Insert the HTML into the content div
+                document.getElementById('content').innerHTML = html;
+            });
+    </script>
+</body>
+</html>
