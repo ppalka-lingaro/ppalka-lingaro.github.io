@@ -1,0 +1,92 @@
+classes: {...@../../classes/lingaro/erd/domain_shapes.d2.classes}
+Sales start schema: {
+  Fct Sales: {
+    tooltip: Total abstinence is easier than perfect moderation
+    Order Id: {constraint: primary_key}
+    Item SKU: Fct Sales.Item SKU
+    Item Name: Order Line Item Name
+    Item Category: Assoc Product Category Product Id Category Id Dim Category Category Id
+    Item Qty: Order Line Item Qty
+    Item Price: Order Line Item Item Price
+    Item Discount: Order Line Item Discount
+    Item Tax: Order Line Item Tax
+    Item Total: Order Line Item Total
+    Order Discount
+    Order Tax
+    Order Total
+    Store Id: {constraint: foreign_key}
+    Store Name: {constraint: foreign_key Dim Store Name}
+    Store Url: {constraint: foreign_key Dim Store Url}
+    Store Brand: {constraint: foreign_key Dim Store Brand}
+    Store Region: {constraint: foreign_key Dim Store Region}
+    Customer Id: {constraint: foreign_key}
+    Order Date
+    Shipping Method Name: Shipping Method Name
+    Shipping Cost
+    Payment Method Name: Payment Method Name
+    Payment Cost
+    Billing Address Id: {constraint: foreign_key Dim Address Zip Code}
+    Shipping Address Id: {constraint: foreign_key Dim Address Zip Code}
+  }
+ 
+  Dim Address: {
+    Address Id: {constraint: primary_key}
+    City
+    Zip Code
+    Country
+    State
+  }
+  Dim Customer: {
+    Customer Id: {constraint: primary_key}
+    Customer First Name
+    Customer Last Name
+    Customer Email
+    Customer Phone
+    Shipping Address Street Name
+    Shipping Address Street Number
+    Shipping Address City
+    Shipping Address Zip
+    Shipping Address State
+    Shipping Address Country
+    Billing Address Street Name
+    Billing Address Street Number
+    Billing Address City
+    Billing Address Zip
+    Billing Address State
+    Billing Address Country
+    Acquisition Date
+  }
+  Dim Product: {
+    Id: {constraint: primary_key}
+    Product SKU
+    Product Name
+    Product Price
+    Store Name
+    Primary Product Category
+  }
+  Dim Store: {
+    Id: {constraint: primary_key}
+    Url
+    Name
+    Region
+    Brand
+  }
+  Assoc Product Category: {
+    Product Id: {constraint: foreign_key}
+    Category Id: {constraint: foreign_key}
+  }
+  Dim Category: {
+    Category Id: {constraint: primary_key}
+    Category Name
+    Is Leaf
+  }
+  Fct Sales.Item SKU <-> Dim Product.Product SKU: "is for" {class: om-1}
+  Fct Sales.StoreId <-> Dim Store.Id: "belongs to" {class: om-1}
+  Fct Sales.Customer Id <-> Dim Customer.Customer Id: "placed by" {class: om-1}
+  Fct Sales.Billing Address Id <-> Dim Address.Address Id: "billed to" {class: om-1}
+  Fct Sales.Shipping Address Id <-> Dim Address.Address Id: "shipped to" {class: om-1}
+  Dim Product.Product Categories <-> Assoc Product Category.Product Id: "has" {class: om-om}
+  Assoc Product Category.Product Id <-> Dim Product.Id: "belongs to" {class: om-om}
+  Assoc Product Category.Category Id <-> Dim Category.Category Id: "categorized as" {class: m-o}
+  *.shape: sql_table
+}

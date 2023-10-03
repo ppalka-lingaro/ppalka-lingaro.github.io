@@ -1,0 +1,338 @@
+Shopify Silver model: "" {
+  address: {
+    id: STRING {constraint: primary_key}
+    street_name: STRING
+    street_number: STRING
+    city: STRING
+    zip_code: STRING
+    country: STRING
+    state: STRING
+    top: 1836
+    left: 2260
+  }
+
+  cart: {
+    id: STRING {constraint: primary_key}
+    session_id: STRING
+    quantity: INT
+    value: FLOAT
+    top: 612
+    left: 338
+  }
+
+  cart_line_item: {
+    id: STRING {constraint: primary_key}
+    product_id: STRING {constraint: foreign_key}
+    quantity: INT
+    value: FLOAT
+    top: 828
+    left: 0
+  }
+
+  category: {
+    id: STRING {constraint: primary_key}
+    name: STRING
+    parent_category_id: STRING {constraint: foreign_key}
+    is_leaf: BOOLEAN
+  }
+
+  customer: {
+    id: STRING {constraint: primary_key}
+    first_name: STRING
+    last_name: STRING
+    email: STRING
+    phone: STRING
+    shipping_address_street_name: STRING
+    shipping_address_street_number: STRING
+    shipping_address_city: STRING
+    shipping_address_zip: STRING
+    shipping_address_state: STRING
+    shipping_address_country: STRING
+    billing_address_street_name: STRING
+    billing_address_street_number: STRING
+    billing_address_city: STRING
+    billing_address_zip: STRING
+    billing_address_state: STRING
+    billing_address_country: STRING
+    shipping_address_id: STRING {constraint: foreign_key}
+    billing_address_id: STRING {constraint: foreign_key}
+    acquisition_date: DATE
+    customer_account_id: STRING
+  }
+
+  ga_event_add_2_cart_event: {
+    id: STRING {constraint: primary_key}
+    session_id: STRING {constraint: foreign_key}
+    page_title: STRING
+    timestamp: TIMESTAMP
+    event_name: STRING
+    cart_id: STRING {constraint: foreign_key}
+    product_id: STRING {constraint: foreign_key}
+    product_sku: STRING
+    quantity: INT
+    top: 432
+    left: 748
+  }
+
+  ga_event_order_placed: {
+    id: STRING {constraint: primary_key}
+    session_id: STRING {constraint: foreign_key}
+    page_title: STRING
+    timestamp: TIMESTAMP
+    event_name: STRING
+    order_id: STRING {constraint: foreign_key}
+    top: 972
+    left: 1396
+  }
+
+  ga_event_page_view: {
+    id: STRING {constraint: primary_key}
+    session_id: STRING {constraint: foreign_key}
+    page_title: STRING
+    timestamp: TIMESTAMP
+    event_name: STRING
+    top: 419
+    left: 2283
+  }
+
+  ga_event_product_view: {
+    id: STRING {constraint: primary_key}
+    session_id: STRING {constraint: foreign_key}
+    page_title: STRING
+    timestamp: TIMESTAMP
+    event_name: STRING
+    product_id: STRING {constraint: foreign_key}
+    product_sku: STRING
+    top: 648
+    left: 1239
+  }
+
+  order: {
+    id: STRING {constraint: primary_key}
+    store_id: STRING
+    customer_id: STRING {constraint: foreign_key}
+    session_id: STRING {constraint: foreign_key}
+    date: DATE
+    total: FLOAT
+    shipping_method_id: STRING {constraint: foreign_key}
+    shipping_cost: FLOAT
+    payment_method_id: STRING {constraint: foreign_key}
+    payment_cost: FLOAT
+    tax: FLOAT
+    discount: FLOAT
+    billing_address_id: STRING {constraint: foreign_key}
+    shipping_address_id: STRING {constraint: foreign_key}
+    top: 1296
+    left: 1757
+  }
+
+  order_line_item: {
+    id: STRING {constraint: primary_key}
+    order_id: STRING {constraint: foreign_key}
+    product_sku: STRING
+    qty: INT
+    item_price: FLOAT
+    discount: FLOAT
+    tax: FLOAT
+    total: FLOAT
+    top: 1260
+    left: 961
+  }
+
+  payment_method: {
+    id: STRING {constraint: primary_key}
+    name: STRING
+    top: 1584
+    left: 2260
+  }
+
+  product: {
+    id: STRING {constraint: primary_key}
+    sku: STRING
+    name: STRING
+    price: FLOAT
+    store_id: STRING {constraint: foreign_key}
+    categories: "ARRAY OF category_id" {constraint: foreign_key}
+    top: 864
+    left: 415
+  }
+
+  session: {
+    id: STRING {constraint: primary_key}
+    store_id: STRING {constraint: foreign_key}
+    start_date: DATE
+    end_date: DATE
+    ip: STRING
+    user_agent: STRING
+    traffic_source_id: STRING {constraint: foreign_key}
+    traffic_source_name: STRING
+    direct_cost: FLOAT
+    is_returning: BOOLEAN
+    visit_number: INT
+    customer_id: STRING {constraint: foreign_key}
+    customer_first_name: STRING
+    customer_last_name: STRING
+    customer_email: STRING
+    top: 829
+    left: 2260
+  }
+
+  shipping_method: {
+    id: STRING {constraint: primary_key}
+    name: STRING
+    top: 1512
+    left: 1387
+  }
+
+  store: {
+    id: STRING {constraint: primary_key}
+    name: STRING
+    url: STRING
+    region: STRING
+    brand: STRING
+    rootCategoryId: STRING {constraint: foreign_key}
+    top: 0
+    left: 1396
+  }
+
+  traffic_source: {
+    id: STRING {constraint: primary_key}
+    name: STRING
+    top: 1045
+    left: 2791
+  }
+
+  customer_account: {
+    id: STRING {constraint: primary_key}
+  }
+
+  cart_line_item.product_id <-> product.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  category.parent_category_id <-> category.id: "" {
+    source-arrowhead.shape: cf-one
+    target-arrowhead.shape: cf-one
+  }
+
+  customer.customer_account_id <-> customer_account.id: "" {
+    source-arrowhead.shape: cf-one-required
+    target-arrowhead.shape: cf-many
+  }
+
+  customer.shipping_address_id <-> address.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one
+  }
+
+  customer.billing_address_id <-> address.id: "" {
+    source-arrowhead.shape: cf-one
+    target-arrowhead.shape: cf-many
+  }
+
+  ga_event_page_view.session_id <-> session.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_product_view.session_id <-> session.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_product_view.product_id <-> product.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_order_placed.session_id <-> session.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_order_placed.order_id <-> order.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_add_2_cart_event.session_id <-> session.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_add_2_cart_event.cart_id <-> cart.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  ga_event_add_2_cart_event.product_id <-> product.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order.customer_id <-> customer.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order.session_id <-> session.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order.shipping_method_id <-> shipping_method.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order.payment_method_id <-> payment_method.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order.billing_address_id <-> address.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order.shipping_address_id <-> address.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  order_line_item.product_sku <-> product.sku: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+  order_line_item.order_id <-> order.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  product.store_id <-> store.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  session.store_id <-> store.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  session.traffic_source_id <-> traffic_source.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  session.customer_id <-> customer.id: "" {
+    source-arrowhead.shape: cf-many
+    target-arrowhead.shape: cf-one-required
+  }
+
+  store.root_category_id <-> category.id: "" {
+    source-arrowhead.shape: cf-one-required
+    target-arrowhead.shape: cf-one
+  }
+  *.shape: sql_table
+}

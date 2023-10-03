@@ -1,0 +1,13 @@
+@startuml Azure Databricks and Azure Analysis Services
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Databases/all.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Analytics/AzureDatabricks.puml
+!includeurl AzurePuml/Analytics/AzureAnalysisServices.puml
+
+AzureFunction(functionAlias, "Label", "Technology", "Optional Description")
+AzureDatabricks(Azure Databricks, "Data Processing", "Technology", "TEXT")
+AzureAnalysisServices(Azure Analysis Services, "Semantic Data Layer", "Technology", "TEXT")
+AzureDatabricks-->AzureAnalysisServices: ingest
+@enduml

@@ -1,0 +1,14 @@
+@startuml "Azure Databricks and Azure Analysis Services"
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Databases/all.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+
+!include <azure/AzureCommon>
+!include <azure/Analytics/AzureDatabricks>
+!include <azure/Analytics/AzureAnalysisServices>
+
+AzureDatabricks(Azure Databricks, "Data Processing", "TEXT")
+AzureAnalysisServices(Azure Analysis Services, "Data Processing", "TEXT")
+AzureDatabricks-->AzureAnalysisServices: ingest
+@enduml

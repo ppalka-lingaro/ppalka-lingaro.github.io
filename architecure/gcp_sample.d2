@@ -1,19 +1,32 @@
 classes: {...@../classes/lingaro/sa/shapes.d2.classes}
 
-  *.icon2.icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FAI%20and%20Machine%20Learning%2FAI%20Platform.svg
-  *.icon2.shape: image
-  *.icon2.label: ""
+gcpShape: {
+  grid-rows: 3
+  icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FAI%20and%20Machine%20Learning%2FAI%20Platform.svg
+  label: "Label"
+}
 
-  *.description: |md
+gcpShape.documentation: |md
+  # Documentation
+  ## App Engine
+  Streaming changes
+
+
+
+gml_2.description: |md
     # Purpose
     ## Name
     short desc
   |
 
-  x -> y -> z
+  gml_1 -> gml_2 -> z
 
-  x.description: |md
+ gml_1.description: |md
     # Ingest
     ## App Engine
     Streaming changes
   |
+
+  gml*.icon2.icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FAI%20and%20Machine%20Learning%2FAI%20Platform.svg
+  gml*.icon2.shape: image
+  gml*.icon2.label: "gml"

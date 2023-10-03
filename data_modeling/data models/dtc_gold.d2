@@ -1,0 +1,225 @@
+sales start schema: {
+    fct_sales: {
+      tooltip: Total abstinence is easier than perfect moderation
+      order_id: STRING {constraint: primary_key}
+      item_sku: STRING dim_product.product_sku
+      item_name: STRING order_line_item.name
+      item_category: STRING assoc_product_category.product_idcategoty_iddim_category.categoty_id
+      item_qty: INT order_line_item.qty
+      item_price: FLOAT order_line_item.item_price
+      item_discount: FLOAT order_line_item.discount
+      item_tax: FLOAT order_line_item.tax
+      item_total: FLOAT order_line_item.total
+      order_discount: FLOAT
+      order_tax: FLOAT
+      order_total: FLOAT
+      store_id: STRING {constraint: foreign_key}
+      store_name: STRING {constraint: foreign_key dim_store.name}
+      store_url: STRING {constraint: foreign_key dim_store.url}
+      store_brand: STRING {constraint: foreign_key dim_store.brand}
+      store_region: STRING {constraint: foreign_key dim_store.region}
+      customer_id: STRING {constraint: foreign_key}
+      session_id: STRING {constraint: foreign_key}
+      order_date: DATE
+      shipping_method_id: STRING shipping_method.name
+      shipping_cost: FLOAT
+      payment_method_id: STRING payment_method.name
+      payment_cost: FLOAT
+      billing_address_id: STRING {constraint: foreign_key dim_address.zip_code}
+      shipping_address_id: STRING {constraint: foreign_key dim_address.zip_code}
+      top: 0
+      left: 1931
+    }
+
+    dim_address: {
+      address_id: STRING {constraint: primary_key}
+      city: STRING
+      zip_code: STRING
+      country: STRING
+      state: STRING
+      top: 887
+      left: 3434
+    }
+
+    dim_customer: {
+      customer_id: STRING {constraint: primary_key}
+      customer_first_name: STRING
+      customer_last_name: STRING
+      customer_email: STRING
+      customer_phone: STRING
+      shipping_address_street_name: STRING
+      shipping_address_street_number: STRING
+      shipping_address_city: STRING
+      shipping_address_zip: STRING
+      shipping_address_state: STRING
+      shipping_address_country: STRING
+      billing_address_street_name: STRING
+      billing_address_street_number: STRING
+      billing_address_city: STRING
+      billing_address_zip: STRING
+      billing_address_state: STRING
+      billing_address_country: STRING
+      acquisition_date: DATE
+      top: 628
+      left: 576
+    }
+
+    dim_product: {
+      id: STRING {constraint: primary_key}
+      product_sku: STRING
+      product_name: STRING
+      product_price: FLOAT
+      store_id: STRING {constraint: foreign_key}
+      product_categories: STRING {constraint: foreign_key assoc_product_category.product_id}
+      top: 1492
+      left: 2550
+    }
+
+    dim_store: {
+      id: STRING {constraint: primary_key}
+      url: STRING
+      name: STRING
+      region: STRING
+      brand: STRING
+      top: 429
+      left: 1387
+    }
+
+    assoc_product_category: {
+      product_id: STRING {constraint: foreign_key}
+      category_id: STRING {constraint: foreign_key}
+      top: 1889
+      left: 3252
+    }
+
+    dim_category: {
+      category_id: STRING {constraint: primary_key}
+      category_name: STRING
+      is_leaf: BOOLEAN
+      top: 1909
+      left: 2522
+    }
+
+    fct_sales.item_sku <-> dim_product.product_sku: "is for" {
+      source-arrowhead.shape: cf-many
+      target-arrowhead.shape: cf-one-required
+    }
+
+    fct_sales.store_id <-> dim_store.id: "belongs to" {
+      source-arrowhead.shape: cf-many
+      target-arrowhead.shape: cf-one-required
+    }
+
+    fct_sales.customer_id <-> dim_customer.customer_id: "placed by" {
+      source-arrowhead.shape: cf-many
+      target-arrowhead.shape: cf-one-required
+    }
+
+    fct_sales.session_id <-> fct_session.session_id: "initiated from" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    #    fct_sales.shipping_method_id <-> dim_shipping_method.shipping_method_id: "uses" {
+    #      source-arrowhead.shape: cf-one-required
+    #      target-arrowhead.shape: cf-many
+    #    }
+
+    #    fct_sales.payment_method_id <-> dim_payment_method.payment_method_id: "paid by" {
+    #      source-arrowhead.shape: cf-one-required
+    #      target-arrowhead.shape: cf-many
+    #    }
+
+    fct_sales.billing_address_id <-> dim_address.address_id: "billed to" {
+      source-arrowhead.shape: cf-many
+      target-arrowhead.shape: cf-one-required
+    }
+
+    fct_sales.shipping_address_id <-> dim_address.address_id: "shipped to" {
+      source-arrowhead.shape: cf-many
+      target-arrowhead.shape: cf-one-required
+    }
+
+    dim_product.product_categories <-> assoc_product_category.product_id: "has" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    assoc_product_category.product_id <-> dim_product.id: "belongs to" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    assoc_product_category.category_id <-> dim_category.category_id: "categorized as" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    fct_session: {
+      session_id: STRING {constraint: primary_key}
+      store_id: STRING {constraint: foreign_key}
+      start_date: DATE
+      end_date: DATE
+      user_agent: STRING
+      traffic_source_name: STRING
+      direct_cost: FLOAT
+      is_returning: BOOLEAN
+      visit_number: INT
+      customer_id: STRING {constraint: foreign_key}
+      order_shipping_cost: FLOAT {constraint: foreign_key fct_order.shipping_cost}
+      order_payment_cost: FLOAT {constraint: foreign_key fct_order.payment_cost}
+      order_discount: FLOAT {constraint: foreign_key fct_order.shipping_discount}
+      order_tax: FLOAT {constraint: foreign_key fct_order.shipping_tax}
+      event_pageview_count: FLOAT ga_event_pageview.id(count)
+      event_addtocart_count: FLOAT ga_event_addtocart.id(count)
+      top: 0
+      left: 39
+    }
+
+    fct_event_pageview: {
+      id: STRING {constraint: primary_key}
+      session_id: STRING {constraint: foreign_key}
+      page_title: STRING
+      event_name: STRING
+      timestamp: TIMESTAMP
+      top: 730
+      left: 0
+    }
+    fct_event_addtocart: {
+      id: STRING {constraint: primary_key}
+      session_id: STRING {constraint: foreign_key}
+      page_title: STRING
+      event_name: STRING
+      product_id: STRING
+      product_sku: STRING
+      timestamp: TIMESTAMP
+      top: 1248
+      left: 2082
+    }
+    *.shape: sql_table
+
+    fct_session.store_id <-> dim_store.id: "occurs in" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    fct_session.customer_id <-> dim_customer.customer_id: "associated with" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    fct_event_pageview.session_id <-> fct_session.session_id: "belongs to" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    fct_event_addtocart.session_id <-> fct_session.session_id: "belongs to" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+
+    fct_event_addtocart.product_id <-> dim_product.id: "is for" {
+      source-arrowhead.shape: cf-one-required
+      target-arrowhead.shape: cf-many
+    }
+  }

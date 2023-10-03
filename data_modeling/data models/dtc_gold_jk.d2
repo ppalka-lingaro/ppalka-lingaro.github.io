@@ -1,0 +1,159 @@
+fct_order: {
+        shape: sql_table
+        order_id: STRING {constraint: primary_key}
+        item_sku: STRING {constraint: foreign_key dim_order_line_item.product_sku}
+        item_name: STRING {constraint: foreign_key dim_order_line_item.name}
+        item_category: STRING {constraint: foreign_key dim_product_category - dim_product - dim_order_line_item}
+        itemt_qty: INT {constraint: foreign_key dim_order_line_item.qty}
+        item_price: FLOAT {constraint: foreign_key dim_order_line_item.item_price}
+        item_discount: FLOAT {constraint: foreign_key dim_order_line_item.discount}
+        item_tax: FLOAT {constraint: foreign_key dim_order_line_item.tax}
+        item_total: FLOAT {constraint: foreign_key dim_order_line_item.total}
+        discount: FLOAT
+        tax: FLOAT
+        total: FLOAT
+        store_id: STRING {constraint: foreign_key}
+        store_name: STRING {constraint: foreign_key dim_store.name}
+        store_url: STRING {constraint: foreign_key dim_store.url}
+        store_brand: STRING {constraint: foreign_key dim_store.brand}
+        store_region: STRING {constraint: foreign_key dim_store.region}
+        customer_id: STRING {constraint: foreign_key}
+        session_id: STRING {constraint: foreign_key}
+        date: DATE
+        shipping_method_id: STRING {constraint: foreign_key shipping_method.name}
+        shipping_cost: FLOAT
+        payment_method_id: STRING {constraint: foreign_key payment_method.name}
+        payment_cost: FLOAT
+        billing_address_id: STRING {constraint: foreign_key dim_address.zip_code}
+        shipping_address_id: STRING {constraint: foreign_key dim_address.zip_code}
+    }
+
+    dim_order_line_item: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        order_id: STRING {constraint: foreign_key}
+        product_sku: STRING
+        qty: INT
+        item_price: FLOAT
+        discount: FLOAT
+        tax: FLOAT
+        total: FLOAT
+    }
+    dim_address: {
+        shape: sql_table
+        address_id: STRING {constraint: primary_key}
+        city: STRING
+        zip_code: STRING
+        country: STRING
+        state: STRING
+    }
+    dim_customer: {
+        shape: sql_table
+        customer_id: STRING {constraint: primary_key}
+        customer_first_name: STRING
+        customer_last_name: STRING
+        customer_email: STRING
+        customer_phone: STRING
+        shipping_address_street_name: STRING
+        shipping_address_street_number: STRING
+        shipping_address_city: STRING
+        shipping_address_zip: STRING
+        shipping_address_state: STRING
+        shipping_address_country: STRING
+        billing_address_street_name: STRING
+        billing_address_street_number: STRING
+        billing_address_city: STRING
+        billing_address_zip: STRING
+        billing_address_state: STRING
+        billing_address_country: STRING
+        shipping_address_id: STRING {constraint: foreign_key}
+        billing_address_id: STRING {constraint: foreign_key}
+        acquisition_date: DATE
+      }
+
+    dim_product: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        sku: STRING
+        name: STRING
+        price: FLOAT
+        store_id: STRING {constraint: foreign_key}
+        product_categories: STRING {constraint: foreign_key product_categories.product_id}
+    }
+    product_categories: {
+        shape: sql_table
+        product_id: STRING {constraint: foreign_key}
+        category_id: STRING {constraint: foreign_key}
+      }
+
+    dim_category: {
+       shape: sql_table
+        category_id: STRING {constraint: primary_key}
+        category_name: STRING
+        category_parent_id: STRING {constraint: foreign_key}
+        is_leaf: BOOLEAN
+    }
+
+    fct_session: {
+        shape: sql_table
+        session_id: STRING {constraint: primary_key}
+        store_id: STRING {constraint: foreign_key}
+        start_date: DATE
+        end_date: DATE
+        user_agent: STRING
+        traffic_source_name: STRING
+        direct_cost: FLOAT
+        is_returning: BOOLEAN
+        visit_number: INT
+        customer_id: STRING {constraint: foreign_key}
+        order_shipping_cost: FLOAT {constraint: foreign_key fct_order.shipping_cost}
+        order_payment_cost: FLOAT {constraint: foreign_key fct_order.payment_cost}
+        order_discount: FLOAT {constraint: foreign_key fct_order.shipping_discount}
+        order_tax: FLOAT {constraint: foreign_key fct_order.shipping_tax}
+        event_pageview: FLOAT {constraint: foreign_key dim_event_pageview.id(count)}
+        event_addtocart: FLOAT {constraint: foreign_key dim_event_addtocart.id(count)}
+
+    }
+
+    dim_store: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        url: STRING
+        name: STRING
+        region: STRING
+        brand: STRING
+    }
+
+    fct_event_pageview: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        session_id: STRING {constraint: foreign_key}
+        page_title: STRING
+        event_name: STRING
+        timestamp: TIMESTAMP
+    }
+    fct_event_addtocart: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        session_id: STRING {constraint: foreign_key}
+        page_title: STRING
+        event_name: STRING
+        product_id: STRING
+        product_sku: STRING
+        timestamp: TIMESTAMP
+    }
+
+    dim_shipping_method: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        name: STRING
+    }
+
+class: {
+    dim_payment_method: {
+        shape: sql_table
+        id: STRING {constraint: primary_key}
+        name: STRING
+    }
+
+    fct_event_addtocart:

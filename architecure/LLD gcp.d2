@@ -1,0 +1,22 @@
+classes: {...@../classes/other/terrastruct/azure.d2.classes}
+classes: {...@../classes/lingaro/sa/shapes.d2.classes}
+
+
+Analysis Services.icon2.class: Analysis Services
+Analysis Services.description: |md
+# Ingest
+## App Engine
+Streaming changes
+|
+direction: right
+
+*.class: gcpShape
+Data Sources: @Data_Sources.d2
+ETL: @Classic_Components.d2.ETL
+Ingestion: @Classic_Components.d2.Data Ingestion
+
+
+Data Sources.*.* -> Ingestion: "Extract data"
+Ingestion -> ETL.Data_lake.raw: "Ingest data"
+
+

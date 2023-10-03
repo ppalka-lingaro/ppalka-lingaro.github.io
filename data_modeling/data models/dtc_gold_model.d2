@@ -1,0 +1,94 @@
+FctOrderLine: {
+  shape: sql_table
+  OrderLineItemId: STRING {constraint: primary_key}
+  orderId: STRING {constraint: foreign_key}
+  productSku: STRING
+  qty: INT
+  itemPrice: FLOAT
+  discount: FLOAT
+  tax: FLOAT
+  total: FLOAT
+  storeId: STRING {constraint: foreign_key}
+  customerId: STRING {constraint: foreign_key}
+  sessionId: STRING {constraint: foreign_key}
+  date: DATE
+  total: FLOAT
+  shippingMethodId: STRING {constraint: foreign_key} --shippingMethod.name
+  shippingCost: FLOAT
+  paymentMethodId: STRING {constraint: foreign_key} --paymentMethod.name
+  paymentCost: FLOAT
+  tax: FLOAT
+  discount: FLOAT
+  billingAddressId: STRING {constraint: foreign_key}
+  shippingAddressId: STRING {constraint: foreign_key} --shippingAddress.zip_code
+}
+
+DimAddress: {
+    shape: sql_table
+    id: STRING {constraint: primary_key}
+    streetName: STRING
+    streetNumber: STRING
+    city: STRING
+    zipCode: STRING
+    country: STRING
+    state: STRING
+  }
+
+DimCustomer: {
+    shape: sql_table
+    id: STRING {constraint: primary_key}
+    firstName: STRING
+    lastName: STRING
+    email: STRING
+    phone: STRING
+    shippingAddressStreetName: STRING
+    shippingAddressStreetNumber: STRING
+    shippingAddressCity: STRING
+    shippingAddressZip: STRING
+    shippingAddressState: STRING
+    shippingAddressCountry: STRING
+    billingAddressStreetName: STRING
+    billingAddressStreetNumber: STRING
+    billingAddressCity: STRING
+    billingAddressZip: STRING
+    billingAddressState: STRING
+    billingAddressCountry: STRING
+    shippingAddressId: STRING {constraint: foreign_key}
+    billingAddressId: STRING {constraint: foreign_key}
+    acquisitionDate: DATE
+    customerAccountId: STRING
+  }
+
+  DimProduct: {
+    shape: sql_table
+    id: STRING {constraint: primary_key}
+    sku: STRING
+    name: STRING
+    price: FLOAT
+    storeId: STRING {constraint: foreign_key}
+    categories: "ARREY OF CategoryId" {constraint: foreign_key}
+  }
+
+  FctSession: {
+    shape: sql_table
+    id: STRING {constraint: primary_key}
+    storeId: STRING {constraint: foreign_key}
+    startDate: DATE
+    endDate: DATE
+    ip: STRING
+    userAgent: STRING
+    trafficSourceId: STRING {constraint: foreign_key}
+    trafficSourceName: STRING
+    directCost: FLOAT
+    isReturning: BOOLEAN
+    visitNumber: INT
+    customerId: STRING {constraint: foreign_key}
+    customerFirstName: STRING
+    customerLastName: STRING
+    customerEmail: STRING
+    OrderShippingCost: FLOAT {constraint: foreign_key}
+    OrderPymentCost: FLOAT {constraint: foreign_key}
+    OliDiscount: FLOAT {constraint: foreign_key}
+    OliTax: FLOAT {constraint: foreign_key}
+  }
+

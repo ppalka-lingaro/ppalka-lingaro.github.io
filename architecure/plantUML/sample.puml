@@ -1,0 +1,25 @@
+@startuml Hello World
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Databases/all.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Analytics/AzureDatabricks.puml
+!includeurl AzurePuml/Analytics/AzureAnalysisServices.puml
+
+
+skinparam componentArrowColor Black
+skinparam componentBackgroundColor White
+skinparam nodeBackgroundColor White
+skinparam agentBackgroundColor White
+skinparam artifactBackgroundColor White
+
+actor "Person" as personAlias
+AzureFunction(azf, "Label", "Technology", "Optional Description")
+AzureCosmosDb(cosmosDbAlias, "Label", "Technology", "Optional Description")
+AzureDatabricks(AzureDatabricks, "Data Processing", "Technology", "TEXT")
+AzureAnalysisServices(AzureAnalysisServices, "Semantic Data Layer", "Technology", "TEXT")
+AzureSqlDatabase(AzureSQLDatabase, "Azure SQL Database", " ")
+personAlias -r-> azf
+azf --> cosmosDbAlias
+
+@enduml

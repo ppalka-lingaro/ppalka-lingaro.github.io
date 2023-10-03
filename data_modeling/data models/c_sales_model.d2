@@ -1,0 +1,20 @@
+classes: {...@../../classes/lingaro/erd/domain_shapes.d2.classes}
+Sales start schema: {
+  Sales: {}
+  Address: {}
+  Customer: {}
+  Product: {}
+  Store: {}
+  Association Product Category: {}
+  Category: {}
+
+  Sales <-> Product: "is for" {class: om-1}
+  Sales <-> Store: "belongs to" {class: om-1}
+  Sales <-> Customer: "placed by" {class: om-1}
+  Sales <-> Address: "billed to" {class: om-1}
+  Sales <-> Address: "shipped to" {class: om-1}
+  Product <-> Association Product Category: "has" {class: om-om}
+  Association Product Category <-> Product: "belongs to" {class: om-om}
+  Association Product Category <-> Category: "categorized as" {class: m-o}
+  *.shape: sql_table
+}

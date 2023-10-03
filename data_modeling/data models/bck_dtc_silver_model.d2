@@ -1,0 +1,327 @@
+Address: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  streetName: STRING
+  streetNumber: STRING
+  city: STRING
+  zipCode: STRING
+  country: STRING
+  state: STRING
+}
+
+Cart: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  sessionId: STRING
+  quantity: INT
+  value: FLOAT
+}
+
+CartLineItem: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  productId: STRING {constraint: foreign_key}
+  quantity: INT
+  value: FLOAT
+}
+
+Category: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  name: STRING
+  parentCategoryId: STRING {constraint: foreign_key}
+  isLeaf: BOOLEAN
+}
+
+Customer: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  firstName: STRING
+  lastName: STRING
+  email: STRING
+  phone: STRING
+  shippingAddressStreetName: STRING
+  shippingAddressStreetNumber: STRING
+  shippingAddressCity: STRING
+  shippingAddressZip: STRING
+  shippingAddressState: STRING
+  shippingAddressCountry: STRING
+  billingAddressStreetName: STRING
+  billingAddressStreetNumber: STRING
+  billingAddressCity: STRING
+  billingAddressZip: STRING
+  billingAddressState: STRING
+  billingAddressCountry: STRING
+  shippingAddressId: STRING {constraint: foreign_key}
+  billingAddressId: STRING {constraint: foreign_key}
+  acquisitionDate: DATE
+  customerAccountId: STRING
+}
+
+GAEventAdd2CartEvent: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  sessionId: STRING {constraint: foreign_key}
+  pageTitle: STRING
+  timestamp: TIMESTAMP
+  eventName: STRING
+  cartId: STRING {constraint: foreign_key}
+  productId: STRING {constraint: foreign_key}
+  productSKU: STRING
+  quantity: INT
+}
+
+GAEventOrderPlaced: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  sessionId: STRING {constraint: foreign_key}
+  pageTitle: STRING
+  timestamp: TIMESTAMP
+  eventName: STRING
+  OrderId: STRING {constraint: foreign_key}
+}
+
+GAEventPageView: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  sessionId: STRING {constraint: foreign_key}
+  pageTitle: STRING
+  timestamp: TIMESTAMP
+  eventName: STRING
+}
+
+GAEventProductView: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  sessionId: STRING {constraint: foreign_key}
+  pageTitle: STRING
+  timestamp: TIMESTAMP
+  eventName: STRING
+  productId: STRING {constraint: foreign_key}
+  productSku: STRING
+}
+
+Order: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  storeId: STRING
+  customerId: STRING {constraint: foreign_key}
+  sessionId: STRING {constraint: foreign_key}
+  date: DATE
+  total: FLOAT
+  shippingMethodId: STRING {constraint: foreign_key}
+  shippingCost: FLOAT
+  paymentMethodId: STRING {constraint: foreign_key}
+  paymentCost: FLOAT
+  tax: FLOAT
+  discount: FLOAT
+  billingAddressId: STRING {constraint: foreign_key}
+  shippingAddressId: STRING {constraint: foreign_key}
+}
+
+OrderLineItem: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  orderId: STRING {constraint: foreign_key}
+  productSku: STRING
+  qty: INT
+  itemPrice: FLOAT
+  discount: FLOAT
+  tax: FLOAT
+  total: FLOAT
+}
+
+PaymentMethod: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  name: STRING
+}
+
+Product: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  sku: STRING
+  name: STRING
+  price: FLOAT
+  storeId: STRING {constraint: foreign_key}
+  categories: "ARREY OF CategoryId" {constraint: foreign_key}
+}
+
+Session: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  storeId: STRING {constraint: foreign_key}
+  startDate: DATE
+  endDate: DATE
+  ip: STRING
+  userAgent: STRING
+  trafficSourceId: STRING {constraint: foreign_key}
+  trafficSourceName: STRING
+  directCost: FLOAT
+  isReturning: BOOLEAN
+  visitNumber: INT
+  customerId: STRING {constraint: foreign_key}
+  customerFirstName: STRING
+  customerLastName: STRING
+  customerEmail: STRING
+}
+
+ShippingMethod: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  name: STRING
+}
+
+Store: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  name: STRING
+  url: STRING
+  region: STRING
+  brand: STRING
+  rootCategoryId: CategoryId {constraint: foreign_key}
+}
+
+CustomerAccount: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+}
+
+TrafficSource: {
+  shape: sql_table
+  id: STRING {constraint: primary_key}
+  name: STRING
+}
+
+CartLineItem.productId <-> Product.Id: "is for" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Category.parentCategoryId <-> Category.id: "parent of" {
+  source-arrowhead.shape: cf-one
+  target-arrowhead.shape: cf-one
+}
+
+Customer.customerAccountId <-> CustomerAccount.id: places {
+  source-arrowhead.shape: cf-many
+  target-arrowhead.shape: cf-one-required
+}
+
+Customer.shippingAddressId <-> Address.id: has {
+  source-arrowhead.shape: cf-one
+  target-arrowhead.shape: cf-many
+}
+
+Customer.billingAddressId <-> Address.id: has {
+  source-arrowhead.shape: cf-one
+  target-arrowhead.shape: cf-many
+}
+
+GAEventPageView.sessionId <-> Session.id: "belongs to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventProductView.sessionId <-> Session.id: "belongs to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventProductView.productId <-> Product.id: "references" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventOrderPlaced.sessionId <-> Session.id: "belongs to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventOrderPlaced.OrderId <-> Order.id: "references" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventAdd2CartEvent.sessionId <-> Session.id: "belongs to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventAdd2CartEvent.cartId <-> Cart.id: "added to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+GAEventAdd2CartEvent.productId <-> Product.id: "references" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Order.customerId <-> Customer.id: "placed by" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Order.sessionId <-> Session.id: "initiated from" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Order.shippingMethodId <-> ShippingMethod.id: "uses" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Order.paymentMethodId <-> PaymentMethod.id: "paid by" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Order.billingAddressId <-> Address.id: "billed to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Order.shippingAddressId <-> Address.id: "shipped to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+OrderLineItem.productSku <-> Product.sku: "is for" {
+  source-arrowhead.shape: cf-many-required
+  target-arrowhead.shape: cf-many
+}
+OrderLineItem.OrderId <-> Order.id: "belongs to" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Product.storeId <-> Store.id: "belongs to" {
+  target-arrowhead.shape: cf-many-required
+  source-arrowhead.shape: cf-many
+}
+
+Product.storeId <-> Store.Id: "belongs to" {
+  target-arrowhead.shape: cf-many-required
+  source-arrowhead.shape: cf-many
+}
+Session.storeId <-> Store.id: "occurs in" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Session.trafficSourceId <-> TrafficSource.id: "originates from" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Session.customerId <-> Customer.id: "associated with" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}
+
+Store.rootCategoryId <-> Category.id: "associated with" {
+  source-arrowhead.shape: cf-one-required
+  target-arrowhead.shape: cf-many
+}

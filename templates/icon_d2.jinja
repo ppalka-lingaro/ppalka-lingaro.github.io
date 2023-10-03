@@ -1,5 +1,10 @@
-  {{ name }}: {
-    icon: {{ url }}
-    shape: image
-    label: "{{ name }}"
-  }
+classes: {
+  {% for icon in icons_list %}
+  {% set name = icon | replace('.svg', '') %}
+    {{- name }}: {
+        icon: {{ url }}/{{ icon }}
+        shape: image
+        label: "{{ name }}"
+      }
+  {% endfor %}
+}

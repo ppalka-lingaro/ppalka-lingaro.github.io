@@ -1,0 +1,78 @@
+@startuml
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Compute/all.puml
+!includeurl AzurePuml/Storage/all.puml
+!includeurl AzurePuml/Integration/all.puml
+!includeurl AzurePuml/Databases/all.puml
+
+
+
+skinparam linetype polyline
+
+'top left section
+'-------------------------------------------------------------
+package "VM Instances" {
+  AzureVirtualMachine(IngestionApp, "Ingestion App", " ")
+AzureVirtualMachine(ChunkingApp, "Chunking Orchestration App", " ")
+}
+
+AzureBlobStorage(ADLSStaging, "Azure Blob Storage Staging", " ")
+AzureQueueStorage(QueueIngest, "Azure Queue Storage Ingest", " ")
+
+AzureFunction(FunctionTrigger, "Azure Function Trigger", " ")
+
+FunctionTrigger -up-> IngestionApp
+IngestionApp -up-> QueueIngest
+QueueIngest -down-> ChunkingApp
+ADLSStaging -down-> IngestionApp
+
+'top right section
+'-------------------------------------------------------------
+AzureQueueStorage(QueueLargeFile, "Azure Queue Large File", " ")
+AzureQueueStorage(QueueSmallFile, "Azure Queue Small File", " ")
+AzureQueueStorage(QueueSingleFile, "Azure Queue Single File", " ")
+
+AzureVirtualMachine(LargeFileChunkingAppVM, "Large File Chunking App on VM", " ")
+AzureFunction(FunctionSmallFileChunking, "Small File Chunking Function", " ")
+AzureFunction(FunctionImageConversion, "Image Conversion Function", " ")
+
+ChunkingApp -right-> QueueLargeFile
+ChunkingApp -right-> QueueSmallFile
+ChunkingApp -right-> QueueSingleFile
+
+QueueLargeFile -right-> LargeFileChunkingAppVM
+LargeFileChunkingAppVM -down-> QueueSmallFile
+QueueSmallFile -right-> FunctionSmallFileChunking
+FunctionSmallFileChunking -down-> QueueSingleFile
+QueueSingleFile -right-> FunctionImageConversion
+
+'bottom right section
+'-------------------------------------------------------------
+AzureBlobStorage(ADLSImages, "Azure Blob Storage Images", " ")
+AzureVirtualMachine(VM_DLQFailsafeApp, "DLQ Failsafe App on VM", " ")
+AzureQueueStorage(QueueConvertedImages, "Azure Queue Converted Images", " ")
+AzureFunction(FunctionInferenceInvocation, "Inference Invocation Function", " ")
+AzureSqlDatabase(AzureSQL, "Azure SQL Database", " ")
+
+QueueLargeFile -down-> VM_DLQFailsafeApp
+QueueSmallFile -down-> VM_DLQFailsafeApp
+QueueSingleFile -down-> VM_DLQFailsafeApp
+
+VM_DLQFailsafeApp -right-> ADLSImages
+
+FunctionImageConversion -down-> ADLSImages
+ADLSImages -down-> QueueConvertedImages
+QueueConvertedImages -left-> FunctionInferenceInvocation
+FunctionInferenceInvocation -down-> AzureSQL
+
+'bottom left section
+'-------------------------------------------------------------
+AzureMonitor(Monitor, "Azure Monitor", " ")
+AzureEventGrid(EventGrid, "Azure Event Grid", " ")
+AzureSendGrid(SendGrid, "Email Notification", " ")
+
+Monitor --> VM_DLQFailsafeApp
+Monitor -down-> EventGrid
+EventGrid -down-> SendGrid
+@enduml
