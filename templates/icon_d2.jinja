@@ -1,6 +1,7 @@
 classes: {
   {% for icon in icons_list %}
   {% set name = icon | replace('.svg', '') %}
+  {% set name = name | snake_to_pascal_with_space %}
     {{- name }}: {
         icon: {{ url }}/{{ icon }}
         shape: image

@@ -1,0 +1,53 @@
+classes: {
+    Databricks: {
+      icon: https://icons.terrastruct.com/azure%2FAnalytics%20Service%20Color%2FAzure%20Databricks.svg
+      shape: image
+      label: "Azure Databricks"
+    }
+    puml:{
+        grid-rows: 3
+        grid-gap: 0
+        Desc2.style.fill: transparent
+        Desc2.style.stroke: transparent
+        Desc2.style.font-size: 40
+      }
+  }
+
+  puml: "Data Processing1 " {
+    description: |md
+      Azure Databricks
+        ![](https://icons.terrastruct.com/azure%2FAnalytics%20Service%20Color%2FAzure%20Databricks.svg  )
+        Desc
+    |
+    shape: square
+  }
+
+  Data Processing2: {
+    grid-rows: 3
+    grid-gap: 0
+    Title: |md
+      # Azure Databricks
+    |
+    databricks2: "Azure Databricks" {
+      class: Databricks
+    }
+    desc3: |md
+      # Desc
+    |
+  }
+
+  Data Processing3: {
+    grid-rows: 3
+    grid-gap: 0
+    Title: |md
+      # Azure Databricks
+    |
+
+    databricks: "Azure Databricks" {
+      class: Databricks
+    }
+    Desc2: "Desc"
+    Desc2.style.fill: transparent
+    Desc2.style.stroke: transparent
+    Desc2.style.font-size: 40
+  }

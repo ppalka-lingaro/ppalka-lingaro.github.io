@@ -9,6 +9,12 @@ ICON_SITE = 'https://ppalka-lingaro.github.io'
 icons_directory = Path('icons')
 classes_directory = Path('classes/lingaro/common')
 
+def snake_to_pascal_with_space(s):
+    return ' '.join(word.capitalize() for word in s.split('_'))
+
+def snake_to_pascal(s):
+    return ''.join(word.capitalize() for word in s.split('_'))
+
 def render_class(type, url, svgs):
     """ Generate a class for the icon
         read the template from file
@@ -17,6 +23,7 @@ def render_class(type, url, svgs):
     """
     # Create an Environment object with the current directory as the template path.
     env = Environment(loader=FileSystemLoader('./templates/'))
+    env.filters['snake_to_pascal_with_space'] = snake_to_pascal_with_space
 
     # Load the template from file.
     template = env.get_template(f'icon_{type}.jinja')
@@ -38,20 +45,16 @@ def main():
             svgs = [file for file in files if file.endswith(".svg")]
             print("svgs: ", svgs)
             if svgs:
-                rel_dir = os.path.relpath(subdir,path)
-                print("rd: ", rel_dir)
-                main_folder = rel_dir.split(os.path.sep)[0]
-                print("mf: ", main_folder)
-                url = f"{ICON_SITE}/{path}/{rel_dir}"
+                #print("subdir: ", subdir)
+                #print("path: ", path)
+                dir = os.path.basename(subdir)
+                #print(f"dir:{dir}")
+                #print("rd: ", dir)
+                url = f"{ICON_SITE}/{path}/{dir}"
                 url = url.replace("\\","/")
-                print(f"url:{url}")
+                #print(f"url:{url}")
                 rendered_classes = render_class(type,url,svgs)
-
-                #subgroup_body = generate_body_sec(rel_dir,svgs)
-                #group_body = f"{group_body}\n{subgroup_body}"
-                #rendered_html = generate_page("icons_index",folder,group_body )
-                # split the main_folder to get the group name
-                output_file_path = f'{path}\{main_folder}\{main_folder}.{type}'
+                output_file_path = f'{subdir}\{dir}.{type}'
                 print("ofp: ", output_file_path)
                 # Write the rendered HTML to the file
                 with open(output_file_path, 'w') as file:
