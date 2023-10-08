@@ -1,0 +1,146 @@
+classes: {...@../../../classes/lingaro/fabric/all.d2.classes}
+classes: {...@../../../classes/other/terrastruct/azure.d2.classes}
+
+vars: {
+    Data Lake: Lakehouse
+    Data Platform: Fabric
+    Data Warehouse: Data Warehouse
+    Data Mart: DataMart
+    Data Science: Data Science
+    Data Engineering: Data Engineering
+    Data Pipeline: Data Factory Regular
+    Data Compute: Spark Job
+    Pipeline: Pipelines
+    Data Ingestion: Data Factory Regular
+    Workspace: Workspace
+    Data Catalog: Purview
+    BI: Power BI Regular
+    Semantic Layer: Dataset
+    Share: Shortcut
+    Shared dataset: Shared dataset
+    ML Model: Model
+    Experiments: Experiments
+    Data Observatory: Data Activator
+
+    #Data Lake.class: Lakehouse
+}
+
+Fabric: {
+    Platform: {
+        class: ${Data Platform}
+        label: "Platform"
+        }
+
+    Fabric Workspace: {
+        Workspace: {
+            class: ${Workspace}
+            label: "Workspace"
+            }
+        Lakehouse: {
+            Bronze: { label: "Bronze"
+                    class: ${Data Lake}
+                }
+            Silver: { label: "Silver"
+                        class: ${Data Lake}
+                        }
+            Gold: { label: "Gold"
+                        class: ${Data Lake}
+                        }
+
+            Bronze -> Silver : "cleasing"
+            Silver -> Gold: "refining"
+            }
+        Data Processing: {
+            Tranformation: {
+                        class: ${Data Compute}
+                        label: "Data Transformation"
+                        }
+            Orchestration: {
+                class: ${Data Pipeline}
+                label: "Data Orchestration"
+                }
+
+                Orchestration --> Tranformation: "orchestrate"
+        }
+        Data Processing.style.stroke: transparent
+        Data Processing.style.fill: transparent
+    }
+
+    Data Ingestion: {
+        Ingestion: {
+            class: ${Data Ingestion}
+            label: "Data Ingestion"
+            }
+    }
+
+    Data Analysis: {
+        Reporting: "BI and Reporting"{
+            Semantic Layer: {
+                class: ${Semantic Layer}
+                label: "Semantic Layer"
+                }
+            Reporting: {
+                class: ${BI}
+                label: "Reporting"
+                }
+            Semantic Layer --> Reporting: "Visualize"
+            }
+        Data Science: {
+            class: ${Data Science}
+            label: "Data Science"
+            Experiments: {
+                class: ${Experiments}
+                label: "Experiences"
+                }
+            ML Model: {
+                class: ${ML Model}
+                label: "ML Model"
+                }
+            Experiments --> ML Model: "train"
+            }
+        }
+        Fabric Workspace.Lakehouse.Gold --> Data Analysis.Reporting.Semantic Layer: "Model"
+
+
+        Data Activator: {
+            class: ${Data Observatory}
+            }
+        Data Analysis.Reporting.Reporting --> Data Activator: "Activate"
+        Data Governance Plane: {
+            Data Catalog: {
+                class: ${Data Catalog}
+                }
+            }
+        Fabric Workspace.Lakehouse <--> Data Governance Plane.Data Catalog: "Govern Data"
+
+}
+Fabric.Fabric Workspace.Lakehouse --> Fabric.Data Analysis.Data Science: "Load"
+
+Data Sources: {
+    Authority: {
+        Data Share: {
+            class: ${Share}
+            label: "Shortcut"
+            }
+
+        }
+    Legacy: {
+        blob: {
+            class: Data Lake Storage
+            label: "Data Lake"
+        }
+        Legacy SQL Database: {
+            class: Azure SQL Database
+            label: "Legacy SQL\nDatabase"
+            }
+    }
+
+    Stream Data\nSources: {
+        API Connections: {
+            class: API Connections
+            label: "Saas Systems"
+            }
+    }
+
+}
+

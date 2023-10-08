@@ -1,0 +1,100 @@
+classes: {
+    Databricks: {
+      icon: https://icons.terrastruct.com/azure%2FAnalytics%20Service%20Color%2FAzure%20Databricks.svg
+      icon.label.near: outside-bottom-center
+      shape: image
+      label: "Azure Databricks"
+    }
+    Data Integration: {
+      icon: https://icons.terrastruct.com/azure%2FAnalytics%20Service%20Color%2FData%20Factories.svg
+      icon.label.near: outside-bottom-center
+      shape: image
+      label: "Azure Data Factory"
+    }
+    Data Lake: {
+      icon: https://icons.terrastruct.com/azure%2FDatabases%20Service%20Color%2FData%20Lake.svg
+      icon.label.near: outside-bottom-center
+      shape: image
+      label: "Data Lake"
+    }
+  }
+
+  vars: {
+    UmlDatabricks: {
+      grid-rows: 3
+      grid-gap: 20
+      img.class: Databricks
+      img.label.near: outside-bottom-center
+      img.style.font-color: gray
+      description: |md ## description here |
+      style.fill: "#11FF88"
+      style.font-color: gray
+      style.italic: true
+    }
+    umlStyle: {
+      grid-rows: 3
+      grid-gap: 20
+      style.fill: "#11FF88"
+      style.font-color: gray
+      style.italic: true
+    }
+  }
+
+  Data Processing4: {
+    ...${umlStyle}
+  }
+
+  Data Processing5: {
+    ...${UmlDatabricks}
+
+    # this seems to be overridden by Reuse (?), but title.label works
+    # title: |md test |
+
+    title.label: |md # Data Transformation |
+    img.label: Databricks
+    description.label: |md
+      # Fifth Data processing
+      - fifth
+      - TODO sixth
+    |
+  }
+
+  Data Processing6: <<Data Storage>> {
+    ...${umlStyle}
+    title.label: |md # Data Transformation |
+    img.class: Databricks
+    description.label: |md # Opt Desc |
+  }
+
+  Data Storage: <<Data Storage>> {
+    ...${umlStyle}
+    title.label: |md # Storage |
+    img.class: Data Lake
+    description.label: |md # Opt Desc |
+  }
+
+  Data Storage2: <<Data Storage2>> {
+    ...${umlStyle}
+    title.label: |md # Storage 2 |
+    img.class: Data Lake
+    img.label.near: outside-bottom-center
+    description.label: |md # Opt Desc |
+  }
+
+  """
+  classes: {
+    Databricks: {
+      icon: https://icons.terrastruct.com/azure%2FAnalytics%20Service%20Color%2FAzure%20Databricks.svg
+      icon.label.near: outside-bottom-center
+      shape: image
+      img.class: $P1
+      title.label: |md $P1 |
+      img.label.near: outside-bottom-center
+      description.label: |md # Opt Desc |
+
+    }
+  }
+  Data Storage2: <<Data Storage2>> { "P1 Value",  "P2 Value", "P3 Value"
+
+  }
+  """

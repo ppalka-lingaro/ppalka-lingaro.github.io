@@ -1,0 +1,14 @@
+#classes: {...@../../classes/lingaro/Fabric/all.d2.classes}
+...@../../modules/lakehouse/azure/LakehouseOnFabric.d2
+direction: right
+
+
+#Data Sources: @../../modules/lakehouse/azure/LakehouseOnFabric.d2.Legacy Data Sources
+#Processing: @../../modules/lakehouse/azure/LakehouseOnFabric.d2.Data Processing
+#Ingestion: @../../modules/lakehouse/azure/LakehouseOnFabric.d2.Data Ingestion
+
+
+Data Sources.*.* -> Fabric.Data Ingestion: "Extract data"
+Fabric.Data Ingestion -> Fabric.Fabric Workspace.Lakehouse.Bronze: "Ingest data"
+
+
